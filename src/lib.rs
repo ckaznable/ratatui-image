@@ -138,7 +138,7 @@ use std::{
     marker::PhantomData,
 };
 
-use image::{DynamicImage, ImageBuffer, Rgba, imageops};
+use image::{imageops, DynamicImage, ImageBuffer, Rgba};
 use protocol::{ImageSource, Protocol};
 use ratatui::{
     buffer::Buffer,
@@ -447,7 +447,7 @@ impl Resize {
 /// aspect ratio), or will shrink so that both dimensions are
 /// completely contained within the given `width` and `height`,
 /// with empty space on one axis.
-fn fit_area_proportionally(width: u32, height: u32, nwidth: u32, nheight: u32) -> (u32, u32) {
+pub(crate) fn fit_area_proportionally(width: u32, height: u32, nwidth: u32, nheight: u32) -> (u32, u32) {
     let wratio = nwidth as f64 / width as f64;
     let hratio = nheight as f64 / height as f64;
 

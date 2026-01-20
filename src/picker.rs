@@ -7,15 +7,16 @@ use std::{
 };
 
 use crate::{
-    FontSize, ImageSource, Resize, Result,
     errors::Errors,
+    fit_area_proportionally,
     protocol::{
-        Protocol, StatefulProtocol, StatefulProtocolType,
         halfblocks::Halfblocks,
         iterm2::Iterm2,
         kitty::{Kitty, StatefulKitty},
         sixel::Sixel,
+        Protocol, StatefulProtocol, StatefulProtocolType,
     },
+    FontSize, ImageSource, Resize, Result,
 };
 use cap_parser::{Parser, QueryStdioOptions, Response};
 use image::{DynamicImage, Rgba};
@@ -220,6 +221,38 @@ impl Picker {
     /// Returns the capabilities detected by [Picker::from_query_stdio].
     pub fn capabilities(&self) -> &Vec<Capability> {
         &self.capabilities
+    }
+
+    /// Calculate the pixel size a given original image size should be resized to, in order to fit
+    /// into the given target area and resize mode.
+    pub fn planned_pixel_size(
+        &self,
+        original_width: u32,
+        original_height: u32,
+        target_area: Rect,
+        resize: &Resize,
+    ) -> (u32, u32) {
+        let max_width_px = (target_area.width as u32) * (self.font_size.0 as u32);
+        let max_height_px = (target_area.height as u32) * (self.font_size.1 as u32);
+
+        match resize {
+            Resize::Fit(_) => fit_area_proportionally(
+                original_width,
+                original_height,
+                std::cmp::min(max_width_px, original_width),
+                std::cmp::min(max_height_px, original_height),
+            ),
+            Resize::Crop(_) => (
+                std::cmp::min(original_width, max_width_px),
+                std::cmp::min(original_height, max_height_px),
+            ),
+            Resize::Scale(_) => fit_area_proportionally(
+                original_width,
+                original_height,
+                max_width_px,
+                max_height_px,
+            ),
+        }
     }
 
     /// Returns a new protocol for [`crate::Image`] widgets that fits into the given size.
