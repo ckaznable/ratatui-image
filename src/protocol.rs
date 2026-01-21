@@ -71,6 +71,16 @@ impl Protocol {
         };
         inner.area()
     }
+
+    pub fn alloc(&self) -> usize {
+        let inner: &dyn ProtocolTrait = match self {
+            Self::Halfblocks(halfblocks) => halfblocks,
+            Self::Sixel(sixel) => sixel,
+            Self::Kitty(kitty) => kitty,
+            Self::ITerm2(iterm2) => iterm2,
+        };
+        inner.alloc()
+    }
 }
 
 /// A stateful resizing image protocol for the [crate::StatefulImage] widget.
