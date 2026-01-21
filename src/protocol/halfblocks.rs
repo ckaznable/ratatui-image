@@ -92,6 +92,10 @@ impl ProtocolTrait for Halfblocks {
     fn area(&self) -> Rect {
         self.area
     }
+
+    fn alloc(&self) -> usize {
+        self.data.len()
+    }
 }
 
 impl StatefulProtocolTrait for Halfblocks {

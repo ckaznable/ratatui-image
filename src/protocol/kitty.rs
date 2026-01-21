@@ -66,6 +66,13 @@ impl ProtocolTrait for Kitty {
     fn area(&self) -> Rect {
         self.area
     }
+
+    fn alloc(&self) -> usize {
+        self.proto_state.transmit_str
+            .as_ref()
+            .map(|s| s.len())
+            .unwrap_or_default()
+    }
 }
 
 #[derive(Clone)]
@@ -97,6 +104,13 @@ impl ProtocolTrait for StatefulKitty {
 
     fn area(&self) -> Rect {
         self.rect
+    }
+
+    fn alloc(&self) -> usize {
+        self.proto_state.transmit_str
+            .as_ref()
+            .map(|s| s.len())
+            .unwrap_or_default()
     }
 }
 

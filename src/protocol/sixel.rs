@@ -75,6 +75,10 @@ impl ProtocolTrait for Sixel {
     fn area(&self) -> Rect {
         self.area
     }
+
+    fn alloc(&self) -> usize {
+        self.data.len()
+    }
 }
 
 fn render(rect: Rect, data: &str, area: Rect, buf: &mut Buffer, overdraw: bool) {

@@ -30,6 +30,9 @@ trait ProtocolTrait: Send + Sync {
     // Get the area of the image.
     #[allow(dead_code)]
     fn area(&self) -> Rect;
+
+    // Get the alloc size in memory
+    fn alloc(&self) -> usize;
 }
 
 trait StatefulProtocolTrait: ProtocolTrait {
