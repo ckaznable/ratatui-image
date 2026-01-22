@@ -41,7 +41,7 @@ impl ResizeRequest {
 
 /// The only usage of this struct is to pass it to `ThreadProtocols` `update_resize_protocol()`
 pub struct ResizeResponse {
-    protocol: StatefulProtocol,
+    pub protocol: StatefulProtocol,
     id: u64,
 }
 
